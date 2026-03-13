@@ -1,14 +1,14 @@
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart' as http;
 import '../models/wallet.dart';
+import '../config/app_config.dart';
 
 class Web3Service {
   late Web3Client _client;
   String? _connectedAddress;
-  static const String contractAddress = '0x...'; // Deploy and add contract address
 
   Web3Service() {
-    _client = Web3Client('https://polygon-rpc.com', http.Client());
+    _client = Web3Client(AppConfig.rpcUrl, http.Client());
   }
 
   Future<String> connectWallet() async {
@@ -26,14 +26,8 @@ class Web3Service {
     // This would call the getWalletBalance function for each supported token
     return [
       const WalletBalance(
-        token: '0x...', // USDC address
+        token: AppConfig.usdcAddress,
         tokenSymbol: 'USDC',
-        balance: 0.0,
-        usdValue: 0.0,
-      ),
-      const WalletBalance(
-        token: '0x...', // USDT address
-        tokenSymbol: 'USDT',
         balance: 0.0,
         usdValue: 0.0,
       ),

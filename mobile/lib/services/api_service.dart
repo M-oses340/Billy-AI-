@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import '../config/app_config.dart';
 
 class ApiService {
   final Dio _dio;
-  static const String baseUrl = 'http://localhost:3000/api';
 
-  ApiService() : _dio = Dio(BaseOptions(baseUrl: baseUrl));
+  ApiService() : _dio = Dio(BaseOptions(baseUrl: AppConfig.effectiveApiUrl));
 
   Future<Map<String, dynamic>> get(String path) async {
     final response = await _dio.get(path);
