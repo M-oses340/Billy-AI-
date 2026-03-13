@@ -200,11 +200,17 @@ Billy can parse various bill formats:
 
 ## 📚 Documentation
 
+- [Project Status](STATUS.md) - Current implementation status
+- [Quick Start Guide](QUICK_START.md) - Get started in 5 minutes
+- [Testing Checklist](TESTING_CHECKLIST.md) - Verify everything works
 - [SMS Auto-Pay Architecture](backend/SMS_AUTOPAY_ARCHITECTURE.md)
+- [SMS Testing Examples](backend/TEST_SMS.md)
 - [Free AI Setup Guide](backend/SETUP_FREE_AI.md)
+- [Database Setup Options](backend/DATABASE_SETUP.md)
 - [Bridge Integration](contracts/BRIDGE_INTEGRATION.md)
 - [Token Addresses](contracts/TOKEN_ADDRESSES.md)
 - [Testnet Setup](contracts/TESTNET_SETUP.md)
+- [Deployment Guide](DEPLOYMENT.md)
 
 ## 🛣️ Roadmap
 
