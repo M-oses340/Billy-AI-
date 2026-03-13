@@ -38,18 +38,23 @@
 ## 🚧 In Progress
 
 ### Mobile App (Flutter)
-- **Status**: Scaffolded, not tested
+- **Status**: Configured and ready for testing ✅
 - **Components Created**:
-  - BLoC state management structure
-  - SMS monitoring service
-  - Web3 service
-  - API service
-  - UI screens (home, wallet)
+  - ✅ BLoC state management structure
+  - ✅ SMS monitoring service
+  - ✅ Web3 service with contract integration
+  - ✅ API service with backend connection
+  - ✅ UI screens (home, wallet)
+  - ✅ AppConfig for centralized settings
+- **Configuration**:
+  - Contract: `0xaf15ff299F4795224E23D1b6Fd36805Fc32f114e`
+  - API: `http://localhost:3000/api`
+  - Network: Polygon Amoy Testnet
 - **Next Steps**:
-  - Update contract address in web3_service.dart
-  - Update API URL in api_service.dart
-  - Run `flutter pub get`
+  - Run `flutter pub get` in mobile directory
   - Test on emulator/device
+  - Grant SMS permissions
+  - Connect wallet and test payment flow
 
 ## 📋 Testing Results
 
