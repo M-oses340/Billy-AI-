@@ -1,7 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-
 export interface ParsedBill {
   biller: string;
   amount: number;
@@ -10,6 +8,14 @@ export interface ParsedBill {
   reference: string;
   billType: string;
   confidence: number;
+}
+
+function getGeminiClient() {
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+  if (!apiKey) {
+    throw new Error('GEMINI_API_KEY not found in environment variables');
+  }
+  return new GoogleGenerativeAI(apiKey);
 }
 
 export async function parseBillSMSGemini(
@@ -41,20 +47,25 @@ Return ONLY valid JSON in this exact format:
 }`;
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const genAI = getGeminiClient();
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
     
+    console.log('✅ Gemini response received');
+    
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     
     if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
+      const parsed = JSON.parse(jsonMatch[0]);
+      console.log('📋 Parsed bill:', parsed);
+      return parsed;
     }
 
     throw new Error('Failed to parse JSON from Gemini response');
-  } catch (error) {
-    console.error('Gemini API error:', error);
-    throw new Error('Failed to parse bill from SMS');
+  } catch (error: any) {
+    console.error('❌ Gemini API error:', error.message);
+    throw new Error(`Failed to parse bill from SMS: ${error.message}`);
   }
 }
