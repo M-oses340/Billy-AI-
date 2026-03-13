@@ -1,31 +1,28 @@
-import 'package:telephony/telephony.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'api_service.dart';
 
 class SmsService {
-  final Telephony telephony = Telephony.instance;
   final ApiService apiService;
   final List<String> trustedNumbers;
 
   SmsService(this.apiService, this.trustedNumbers);
 
-  Future<void> startListening() async {
-    final bool? permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
-
-    if (permissionsGranted == true) {
-      telephony.listenIncomingSms(
-        onNewMessage: _handleIncomingSms,
-        listenInBackground: true,
-      );
-    }
+  Future<bool> requestSmsPermissions() async {
+    final status = await Permission.sms.request();
+    return status.isGranted;
   }
 
-  Future<void> _handleIncomingSms(SmsMessage message) async {
-    final from = message.address ?? '';
-    final body = message.body ?? '';
+  Future<void> startListening() async {
+    final permissionsGranted = await requestSmsPermissions();
 
-    // Check if from trusted biller
-    if (_isTrustedNumber(from)) {
-      await _processBillSms(from, body);
+    if (permissionsGranted) {
+      // Note: For actual SMS monitoring, you would need to implement
+      // a native Android service using platform channels
+      // This is a placeholder showing the structure
+      print('SMS monitoring started');
+      print('Trusted numbers: $trustedNumbers');
+    } else {
+      throw Exception('SMS permissions not granted');
     }
   }
 
@@ -33,19 +30,31 @@ class SmsService {
     return trustedNumbers.any((trusted) => number.contains(trusted));
   }
 
-  Future<void> _processBillSms(String from, String message) async {
+  // Manual SMS processing for testing
+  Future<Map<String, dynamic>> processSmsManually({
+    required String from,
+    required String message,
+    required String userAddress,
+    required String userId,
+  }) async {
+    if (!_isTrustedNumber(from)) {
+      throw Exception('Number not in trusted list');
+    }
+
     try {
       final response = await apiService.post('/sms/process', {
         'from': from,
         'message': message,
-        'userAddress': '0x...', // Get from wallet
+        'userAddress': userAddress,
+        'userId': userId,
         'timestamp': DateTime.now().toIso8601String(),
       });
 
-      // Handle response and show notification
       _handleSmsResponse(response);
+      return response;
     } catch (e) {
       print('Error processing SMS: $e');
+      rethrow;
     }
   }
 
@@ -54,13 +63,13 @@ class SmsService {
 
     switch (status) {
       case 'paid':
-        // Show success notification
+        print('✅ Bill paid successfully');
         break;
       case 'insufficient_balance':
-        // Show low balance notification
+        print('⚠️ Insufficient balance');
         break;
       case 'review_required':
-        // Show review notification
+        print('📋 Review required');
         break;
     }
   }

@@ -31,8 +31,8 @@ dependencies:
   dio: ^5.4.0
   get_it: ^7.6.4
   
-  # SMS
-  telephony: ^0.2.0
+  # SMS - using permission_handler for now
+  permission_handler: ^11.0.0
 
 dev_dependencies:
   flutter_test:
