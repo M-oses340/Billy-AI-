@@ -371,48 +371,46 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
         if (state is BillError) {
           return SliverFillRemaining(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.cloud_off_rounded,
-                        size: 64,
-                        color: Colors.red,
-                      ),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.red.withOpacity(0.1),
+                      shape: BoxShape.circle,
                     ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Connection Error',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: const Icon(
+                      Icons.cloud_off_rounded,
+                      size: 64,
+                      color: Colors.red,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Unable to connect to backend',
-                      style: TextStyle(
-                        color: isDark ? Colors.white60 : Colors.black54,
-                      ),
-                      textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Connection Error',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 24),
-                    FilledButton.icon(
-                      onPressed: () => context.read<BillBloc>().add(LoadBills()),
-                      icon: const Icon(Icons.refresh_rounded),
-                      label: const Text('Try Again'),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Unable to connect to backend',
+                    style: TextStyle(
+                      color: isDark ? Colors.white60 : Colors.black54,
                     ),
-                  ],
-                ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  FilledButton.icon(
+                    onPressed: () => context.read<BillBloc>().add(LoadBills()),
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: const Text('Try Again'),
+                  ),
+                ],
               ),
             ),
           );
