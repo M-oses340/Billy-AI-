@@ -30,6 +30,9 @@ dependencies:
   # Utilities
   dio: ^5.4.0
   get_it: ^7.6.4
+  
+  # SMS
+  telephony: ^0.2.0
 
 dev_dependencies:
   flutter_test:
