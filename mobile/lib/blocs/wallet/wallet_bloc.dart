@@ -19,7 +19,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     try {
       final address = await repository.connectWallet();
       final balances = await repository.getBalances(address);
-      emit(WalletConnected(address: address, balances: balances));
+      emit(WalletLoaded(address: address, balances: balances));
     } catch (e) {
       emit(WalletError(e.toString()));
     }
@@ -31,11 +31,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   Future<void> _onLoadWalletBalance(LoadWalletBalance event, Emitter<WalletState> emit) async {
-    if (state is WalletConnected) {
-      final currentState = state as WalletConnected;
+    if (state is WalletLoaded) {
+      final currentState = state as WalletLoaded;
       try {
         final balances = await repository.getBalances(currentState.address);
-        emit(WalletConnected(address: currentState.address, balances: balances));
+        emit(WalletLoaded(address: currentState.address, balances: balances));
       } catch (e) {
         emit(WalletError(e.toString()));
       }
@@ -43,14 +43,15 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   Future<void> _onDepositToWallet(DepositToWallet event, Emitter<WalletState> emit) async {
-    if (state is WalletConnected) {
-      final currentState = state as WalletConnected;
+    if (state is WalletLoaded) {
+      final currentState = state as WalletLoaded;
       emit(WalletTransactionProcessing());
       try {
         await repository.deposit(event.token, event.amount);
         emit(const WalletTransactionSuccess('Deposit successful'));
+        await Future.delayed(const Duration(seconds: 2));
         final balances = await repository.getBalances(currentState.address);
-        emit(WalletConnected(address: currentState.address, balances: balances));
+        emit(WalletLoaded(address: currentState.address, balances: balances));
       } catch (e) {
         emit(WalletError(e.toString()));
       }
@@ -58,14 +59,15 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   Future<void> _onWithdrawFromWallet(WithdrawFromWallet event, Emitter<WalletState> emit) async {
-    if (state is WalletConnected) {
-      final currentState = state as WalletConnected;
+    if (state is WalletLoaded) {
+      final currentState = state as WalletLoaded;
       emit(WalletTransactionProcessing());
       try {
         await repository.withdraw(event.token, event.amount);
         emit(const WalletTransactionSuccess('Withdrawal successful'));
+        await Future.delayed(const Duration(seconds: 2));
         final balances = await repository.getBalances(currentState.address);
-        emit(WalletConnected(address: currentState.address, balances: balances));
+        emit(WalletLoaded(address: currentState.address, balances: balances));
       } catch (e) {
         emit(WalletError(e.toString()));
       }
