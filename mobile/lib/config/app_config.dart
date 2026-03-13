@@ -1,6 +1,6 @@
 class AppConfig {
-  // Backend API
-  static const String apiBaseUrl = 'http://localhost:3000/api';
+  // Backend API - Updated for physical device
+  static const String apiBaseUrl = 'http://192.168.0.108:3000/api';
   
   // Blockchain
   static const String contractAddress = '0xaf15ff299F4795224E23D1b6Fd36805Fc32f114e';

@@ -24,6 +24,17 @@ const billSchema = new mongoose.Schema({
     default: 'pending'
   },
   
+  // Recurring/Standing Order
+  isRecurring: { type: Boolean, default: false },
+  recurringFrequency: { 
+    type: String, 
+    enum: ['weekly', 'monthly', 'quarterly', 'yearly'],
+  },
+  recurringDayOfMonth: { type: Number }, // For monthly bills (1-31)
+  recurringDayOfWeek: { type: Number }, // For weekly bills (0-6, 0=Sunday)
+  parentRecurringBillId: { type: mongoose.Schema.Types.ObjectId, ref: 'Bill' }, // Links to the template bill
+  nextDueDate: { type: Date }, // For the recurring template
+  
   // Blockchain
   blockchainBillId: { type: Number },
   transactionHash: { type: String },

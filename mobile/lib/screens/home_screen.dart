@@ -7,6 +7,7 @@ import '../blocs/wallet/wallet_bloc.dart';
 import '../blocs/wallet/wallet_event.dart';
 import '../blocs/wallet/wallet_state.dart';
 import 'wallet_screen.dart';
+import 'standing_orders_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -113,6 +114,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ),
       ),
       actions: [
+        IconButton(
+          icon: const Icon(Icons.repeat_rounded),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const StandingOrdersScreen()),
+          ),
+          tooltip: 'Standing Orders',
+        ),
         IconButton(
           icon: const Icon(Icons.account_balance_wallet_rounded),
           onPressed: () => Navigator.push(
@@ -335,12 +344,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               child: Icon(icon, color: color, size: 24),
             ),
             const SizedBox(height: 12),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+                maxLines: 1,
               ),
             ),
             const SizedBox(height: 4),
@@ -538,11 +551,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           color: isDark ? Colors.white54 : Colors.black45,
                         ),
                         const SizedBox(width: 6),
-                        Text(
-                          'Due: ${bill.dueDate}',
-                          style: TextStyle(
-                            color: isDark ? Colors.white54 : Colors.black54,
-                            fontSize: 13,
+                        Flexible(
+                          child: Text(
+                            'Due: ${bill.dueDate.toString().split(' ')[0]}',
+                            style: TextStyle(
+                              color: isDark ? Colors.white54 : Colors.black54,
+                              fontSize: 13,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],

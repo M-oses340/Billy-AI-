@@ -8,11 +8,12 @@ import walletRoutes from './routes/walletRoutes';
 import smsRoutes from './routes/smsRoutes';
 import billerRoutes from './routes/billerRoutes';
 import { listenForPayments } from './services/web3Service';
+import { startRecurringBillScheduler } from './services/recurringBillService';
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -50,11 +51,15 @@ listenForPayments((billId, payer, amount) => {
   // TODO: Update bill status in database
 });
 
-app.listen(PORT, () => {
+// Start recurring bill scheduler
+startRecurringBillScheduler();
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Billy backend running on port ${PORT}`);
   console.log(`📱 SMS auto-pay enabled with Google Gemini AI`);
   console.log(`⛓️  Connected to: ${process.env.RPC_URL}`);
   console.log(`📝 Contract: ${process.env.CONTRACT_ADDRESS}`);
+  console.log(`🌐 Accessible at: http://192.168.0.108:${PORT}`);
 });
 
 export default app;
