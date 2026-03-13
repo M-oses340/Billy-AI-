@@ -41,9 +41,42 @@ class BillyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'Billy',
+          themeMode: ThemeMode.system, // Auto-detect device theme
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
             useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xFF6366F1), // Indigo
+              brightness: Brightness.light,
+            ),
+            cardTheme: CardThemeData(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: Colors.grey.shade200),
+              ),
+            ),
+            appBarTheme: const AppBarTheme(
+              centerTitle: false,
+              elevation: 0,
+            ),
+          ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xFF6366F1), // Indigo
+              brightness: Brightness.dark,
+            ),
+            cardTheme: CardThemeData(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: Colors.grey.shade800),
+              ),
+            ),
+            appBarTheme: const AppBarTheme(
+              centerTitle: false,
+              elevation: 0,
+            ),
           ),
           home: const HomeScreen(),
           routes: {
