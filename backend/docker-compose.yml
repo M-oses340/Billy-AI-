@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: billy-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: billy
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - billy-network
+
+  backend:
+    build: .
+    container_name: billy-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/billy
+      - PORT=3000
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    networks:
+      - billy-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  billy-network:
+    driver: bridge
