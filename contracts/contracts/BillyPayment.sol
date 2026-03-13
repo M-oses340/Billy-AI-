@@ -27,6 +27,7 @@ contract BillyPayment is Ownable {
     IUniswapV2Router public uniswapRouter;
     address public stablecoin; // USDC address
     bool public autoConvertEnabled;
+    
     struct Bill {
         address payer;
         address payee;
@@ -87,20 +88,6 @@ contract BillyPayment is Ownable {
         emit BillCreated(billCounter, msg.sender, _payee, _amount);
         return billCounter;
     }
-
-    function payBill(uint256 _billId) external {
-        Bill storage bill = bills[_billId];
-        require(!bill.paid, "Bill already paid");
-        require(msg.sender == bill.payer, "Not the payer");
-        require(block.timestamp <= bill.dueDate, "Bill overdue");
-
-        IERC20 token = IERC20(bill.token);
-        require(token.transferFrom(msg.sender, bill.payee, bill.amount), "Transfer failed");
-
-        bill.paid = true;
-        emit BillPaid(_billId, msg.sender, bill.amount);
-    }
-}
 
     // Deposit native ETH/MATIC with optional auto-convert
     function depositNative(bool convertToStable) external payable {

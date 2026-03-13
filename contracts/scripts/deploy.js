@@ -11,12 +11,12 @@ async function main() {
     // Polygon Mainnet
     uniswapRouter = "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"; // QuickSwap
     stablecoin = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // USDC
-  } else if (network === "mumbai") {
-    // Mumbai Testnet
-    uniswapRouter = "0x8954AfA98594b838bda56FE4C12a09D7739D179b"; // QuickSwap Mumbai
-    stablecoin = "0x0FA8781a83E46826621b3BC094Ea2A0212e71B23"; // USDC Mumbai
+  } else if (network === "amoy") {
+    // Amoy Testnet (replaced Mumbai)
+    uniswapRouter = "0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008"; // QuickSwap Amoy
+    stablecoin = "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582"; // USDC Amoy
   } else {
-    console.error("Unsupported network. Use polygon or mumbai");
+    console.error("Unsupported network. Use polygon or amoy");
     process.exit(1);
   }
 
